@@ -26,9 +26,10 @@ Esta Todo List no es un simple listado de tareas genéricas; es el reflejo fiel 
 ## 📁 Estructura del Proyecto
 
 ```text
-/todo-list
-├── css/
-│   └── styles.css        # Hoja de estilos centralizada y variables temáticas
-├── index.html            # Versión en Catalán (por defecto)
-├── index-es.html         # Versión en Castellano
-└── index-en.html         # Versión en Inglés
+
+├── index/
+│   ├── index.html        # Versión en Catalán (por defecto)
+│   ├── index-es.html     # Versión en Castellano
+│   └── index-en.html     # Versión en Inglés
+│
+└── style.css             # Hoja de estilos centralizada y variables temáticas
