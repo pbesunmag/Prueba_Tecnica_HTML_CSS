@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparació Escena – La màgia d'en Godot</title>
+    <meta name="description" content="Checklist de preparació per al show de màgia La màgia d'en Godot">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="header">
+            <nav class="lang-selector" aria-label="Selector d'idioma">
+                <a href="#" class="lang-link lang-link--active" aria-current="page">CA</a>
+                <a href="index-es.html" class="lang-link">ES</a>
+                <a href="index-en.html" class="lang-link">EN</a>
+            </nav>
+            <h1 class="header__title">Preparació Escena</h1>
+            <p class="header__subtitle">La màgia d'en Godot</p>
+            <div class="header__curtain-deco"></div>
+        </header>
+
+        <aside class="show-countdown" aria-label="Temps restant per a la funció">
+    <span class="show-countdown__label">Propera funció en:</span>
+    <div class="show-countdown__timer">
+        <span class="timer-unit"><strong>01</strong>h</span>
+        <span class="timer-divider">:</span>
+        <span class="timer-unit"><strong>45</strong>m</span>
+        <span class="timer-divider">:</span>
+        <span class="timer-unit"><strong>00</strong>s</span>
+    </div>
+</aside>
+
+        <main class="main-content">
+            
+            <section class="task-entry" aria-labelledby="add-task-heading">
+                <h2 id="add-task-heading" class="sr-only">Afegir nova tasca</h2>
+                <form class="task-form" action="#" method="get">
+                    <label for="new-task" class="sr-only">Què més cal preparar?</label>
+                    <input type="text" id="new-task" name="new-task" class="task-form__input" placeholder="Ex: Comprovar llums..." required>
+                    <button type="submit" class="btn btn--primary">Afegir</button>
+                </form>
+            </section>
+
+            <section class="task-list-section" aria-labelledby="task-list-heading">
+                <h2 id="task-list-heading" class="sr-only">Llista de tasques</h2>
+                <ul class="task-list">
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-1" class="task-item__checkbox" checked>
+                        <label for="task-1" class="task-item__label">Tauleta mag, paperera i biombo</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-2" class="task-item__checkbox" checked>
+                        <label for="task-2" class="task-item__label">Mocador volador: Posar pila, encendre botó, comprovar comandament (butxaca Pol) i col·locar en escena</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-3" class="task-item__checkbox">
+                        <label for="task-3" class="task-item__label">Jaqueta: Ficar got i mocador llarg</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-4" class="task-item__checkbox">
+                        <label for="task-4" class="task-item__label">Carpeta Pol</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-5" class="task-item__checkbox">
+                        <label for="task-5" class="task-item__label">Mocador cassola</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-6" class="task-item__checkbox">
+                        <label for="task-6" class="task-item__label">Rosa</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-7" class="task-item__checkbox">
+                        <label for="task-7" class="task-item__label">Papers Aina</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-8" class="task-item__checkbox">
+                        <label for="task-8" class="task-item__label">Streamer boca</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-9" class="task-item__checkbox">
+                        <label for="task-9" class="task-item__label">Bossa Ampolla: Enganxar moneda amb celo</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-10" class="task-item__checkbox">
+                        <label for="task-10" class="task-item__label">Varetes al maletí</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-11" class="task-item__checkbox">
+                        <label for="task-11" class="task-item__label">Cub Rubik: Desplegar, aguantar-ho amb una pinça i ficar tros de xocolata</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-12" class="task-item__checkbox">
+                        <label for="task-12" class="task-item__label">Mòbil Aina i Pol</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-13" class="task-item__checkbox">
+                        <label for="task-13" class="task-item__label">Comprovar àudios</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-14" class="task-item__checkbox">
+                        <label for="task-14" class="task-item__label">Comprovar Assistant's</label>
+                    </li>
+                    
+                    <li class="task-item">
+                        <input type="checkbox" id="task-15" class="task-item__checkbox">
+                        <label for="task-15" class="task-item__label">Desitjar molta merda i resar que els trucs surtin bé 🎭</label>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="task-actions" aria-labelledby="actions-heading">
+                <h2 id="actions-heading" class="sr-only">Accions de manteniment</h2>
+                <button type="button" class="btn btn--secondary">Eliminar tasques completades</button>
+                <button type="button" class="btn btn--danger">Eliminar totes les tasques</button>
+            </section>
+            
+        </main>
+
+        <footer class="footer">
+            <div class="footer__top-bar">
+                <div class="footer__show-status">
+                    <p>Estat de l'espectacle: <span class="status-indicator"></span> <strong>En preparació</strong></p>
+                </div>
+                <form class="show-selector-inline" action="#" method="get">
+                    <label for="show-select" class="sr-only">Actualitzar estat</label>
+                    <div class="show-selector-inline__controls">
+                        <select id="show-select" name="selected_show" class="show-selector-select">
+                            <option value="prep" selected>En Preparació</option>
+                            <option value="cancelled">Cancel·lat</option>
+                            <option value="ready">Preparats!</option>
+                        </select>
+                        <button type="submit" class="btn btn--secondary btn--sm">Canviar</button>
+                    </div>
+                </form>
+            </div>
+            <section class="seating-status" aria-labelledby="seating-heading">
+                <div class="seating-status__header">
+                    <h2 id="seating-heading" class="seating-status__title">Aforament Sala</h2>
+                    <span class="seating-status__count"><strong>42</strong> / 50 butaques (84%)</span>
+                </div>
+                <div class="seating-status__bar-wrapper" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="50" aria-label="Percentatge d'entrades venudes">
+                    <div class="seating-status__bar-fill" style="width: 84%;"></div>
+                </div>
+                <div class="seating-status__legend">
+                    <span class="legend-item"><span class="legend-dot legend-dot--sold"></span> Venudes (42)</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--free"></span> Lliures (8)</span>
+                </div>
+            </section>
+        </footer>
+    </div>
+</body>
+</html>
