@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stage Preparation – Godot's Magic</title>
-    <meta name="description" content="Preparation checklist for Godot's Magic show">
+    <title>Preparación Escena – La magia de Godot</title>
+    <meta name="description" content="Checklist de preparación para el show de magia La magia de Godot">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,128 +12,128 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-wrapper">
         <header class="header">
-            <nav class="lang-selector" aria-label="Language selector">
+            <nav class="lang-selector" aria-label="Selector de idioma">
                 <a href="index.html" class="lang-link">CA</a>
-                <a href="index-es.html" class="lang-link">ES</a>
-                <a href="#" class="lang-link lang-link--active" aria-current="page">EN</a>
+                <a href="#" class="lang-link lang-link--active" aria-current="page">ES</a>
+                <a href="index-en.html" class="lang-link">EN</a>
             </nav>
-            <h1 class="header__title">Stage Preparation</h1>
-            <p class="header__subtitle">Godot's Magic</p>
+            <h1 class="header__title">Preparación Escena</h1>
+            <p class="header__subtitle">La magia de Godot</p>
             <div class="header__curtain-deco"></div>
         </header>
 
-        <aside class="show-countdown" aria-label="Time remaining for the show">
-    <span class="show-countdown__label">Next show in:</span>
-    <div class="show-countdown__timer">
-        <span class="timer-unit"><strong>01</strong>h</span>
-        <span class="timer-divider">:</span>
-        <span class="timer-unit"><strong>45</strong>m</span>
-        <span class="timer-divider">:</span>
-        <span class="timer-unit"><strong>00</strong>s</span>
-    </div>
-</aside>
+        <aside class="show-countdown" aria-label="Tiempo restante para la función">
+            <span class="show-countdown__label">Próxima función en:</span>
+            <div class="show-countdown__timer">
+                <span class="timer-unit"><strong>01</strong>h</span>
+                <span class="timer-divider">:</span>
+                <span class="timer-unit"><strong>45</strong>m</span>
+                <span class="timer-divider">:</span>
+                <span class="timer-unit"><strong>00</strong>s</span>
+            </div>
+        </aside>
 
         <main class="main-content">
             
             <section class="task-entry" aria-labelledby="add-task-heading">
-                <h2 id="add-task-heading" class="sr-only">Add new task</h2>
+                <h2 id="add-task-heading" class="sr-only">Añadir nueva tarea</h2>
                 <form class="task-form" action="#" method="get">
-                    <label for="new-task" class="sr-only">What else needs to be prepared?</label>
-                    <input type="text" id="new-task" name="new-task" class="task-form__input" placeholder="Ex: Check lights..." required>
-                    <button type="submit" class="btn btn--primary">Add</button>
+                    <label for="new-task" class="sr-only">¿Qué más hay que preparar?</label>
+                    <input type="text" id="new-task" name="new-task" class="task-form__input" placeholder="Ej: Comprobar luces..." required>
+                    <button type="submit" class="btn btn--primary">Añadir</button>
                 </form>
             </section>
 
             <section class="task-list-section" aria-labelledby="task-list-heading">
-                <h2 id="task-list-heading" class="sr-only">Task list</h2>
+                <h2 id="task-list-heading" class="sr-only">Lista de tareas</h2>
                 <ul class="task-list">
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-1" class="task-item__checkbox" checked>
-                        <label for="task-1" class="task-item__label">Magician's table, bin and folding screen</label>
+                        <label for="task-1" class="task-item__label">Mesita mago, papelera y biombo</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-2" class="task-item__checkbox" checked>
-                        <label for="task-2" class="task-item__label">Flying handkerchief: Insert battery, turn on button, check remote (Pol's pocket) and place on stage</label>
+                        <label for="task-2" class="task-item__label">Pañuelo volador: Poner pila, encender botón, comprobar mando (bolsillo Pol) y colocar en escena</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-3" class="task-item__checkbox">
-                        <label for="task-3" class="task-item__label">Jacket: Put glass and long handkerchief inside</label>
+                        <label for="task-3" class="task-item__label">Chaqueta: Meter vaso y pañuelo largo</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-4" class="task-item__checkbox">
-                        <label for="task-4" class="task-item__label">Pol's folder</label>
+                        <label for="task-4" class="task-item__label">Carpeta Pol</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-5" class="task-item__checkbox">
-                        <label for="task-5" class="task-item__label">Pan handkerchief</label>
+                        <label for="task-5" class="task-item__label">Pañuelo cazuela</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-6" class="task-item__checkbox">
-                        <label for="task-6" class="task-item__label">Rose</label>
+                        <label for="task-6" class="task-item__label">Rosa</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-7" class="task-item__checkbox">
-                        <label for="task-7" class="task-item__label">Aina's papers</label>
+                        <label for="task-7" class="task-item__label">Papeles Aina</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-8" class="task-item__checkbox">
-                        <label for="task-8" class="task-item__label">Mouth streamer</label>
+                        <label for="task-8" class="task-item__label">Streamer boca</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-9" class="task-item__checkbox">
-                        <label for="task-9" class="task-item__label">Bottle bag: Stick coin with tape</label>
+                        <label for="task-9" class="task-item__label">Bolsa Botella: Pegar moneda con celo</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-10" class="task-item__checkbox">
-                        <label for="task-10" class="task-item__label">Wands in the briefcase</label>
+                        <label for="task-10" class="task-item__label">Varitas al maletín</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-11" class="task-item__checkbox">
-                        <label for="task-11" class="task-item__label">Rubik's Cube: Unfold, hold with a clip and insert piece of chocolate</label>
+                        <label for="task-11" class="task-item__label">Cubo Rubik: Desplegar, aguantarlo con una pinza y meter trozo de chocolate</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-12" class="task-item__checkbox">
-                        <label for="task-12" class="task-item__label">Aina & Pol's mobile</label>
+                        <label for="task-12" class="task-item__label">Móvil Aina y Pol</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-13" class="task-item__checkbox">
-                        <label for="task-13" class="task-item__label">Check audios</label>
+                        <label for="task-13" class="task-item__label">Comprobar audios</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-14" class="task-item__checkbox">
-                        <label for="task-14" class="task-item__label">Check Assistant's</label>
+                        <label for="task-14" class="task-item__label">Comprobar Assistant's</label>
                     </li>
                     
                     <li class="task-item">
                         <input type="checkbox" id="task-15" class="task-item__checkbox">
-                        <label for="task-15" class="task-item__label">Break a leg and pray the tricks go well 🎭</label>
+                        <label for="task-15" class="task-item__label">Desear mucha mierda y rezar que los trucos salgan bien 🎭</label>
                     </li>
                 </ul>
             </section>
 
             <section class="task-actions" aria-labelledby="actions-heading">
-                <h2 id="actions-heading" class="sr-only">Maintenance actions</h2>
-                <button type="button" class="btn btn--secondary">Delete completed tasks</button>
-                <button type="button" class="btn btn--danger">Delete all tasks</button>
+                <h2 id="actions-heading" class="sr-only">Acciones de mantenimiento</h2>
+                <button type="button" class="btn btn--secondary">Eliminar tareas completadas</button>
+                <button type="button" class="btn btn--danger">Eliminar todas las tareas</button>
             </section>
             
         </main>
@@ -141,31 +141,31 @@
         <footer class="footer">
             <div class="footer__top-bar">
                 <div class="footer__show-status">
-                    <p>Show status: <span class="status-indicator"></span> <strong>In preparation</strong></p>
+                    <p>Estado del espectáculo: <span class="status-indicator"></span> <strong>En preparación</strong></p>
                 </div>
                 <form class="show-selector-inline" action="#" method="get">
-                    <label for="show-select" class="sr-only">Update status</label>
+                    <label for="show-select" class="sr-only">Actualizar estado</label>
                     <div class="show-selector-inline__controls">
                         <select id="show-select" name="selected_show" class="show-selector-select">
-                            <option value="prep" selected>In Preparation</option>
-                            <option value="cancelled">Cancelled</option>
-                            <option value="ready">Ready!</option>
+                            <option value="prep" selected>En Preparación</option>
+                            <option value="cancelled">Cancelado</option>
+                            <option value="ready">¡Preparados!</option>
                         </select>
-                        <button type="submit" class="btn btn--secondary btn--sm">Change</button>
+                        <button type="submit" class="btn btn--secondary btn--sm">Cambiar</button>
                     </div>
                 </form>
             </div>
             <section class="seating-status" aria-labelledby="seating-heading">
                 <div class="seating-status__header">
-                    <h2 id="seating-heading" class="seating-status__title">Venue Capacity</h2>
-                    <span class="seating-status__count"><strong>42</strong> / 50 seats (84%)</span>
+                    <h2 id="seating-heading" class="seating-status__title">Aforo Sala</h2>
+                    <span class="seating-status__count"><strong>42</strong> / 50 butacas (84%)</span>
                 </div>
-                <div class="seating-status__bar-wrapper" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="50" aria-label="Percentage of sold tickets">
+                <div class="seating-status__bar-wrapper" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="50" aria-label="Porcentaje de entradas vendidas">
                     <div class="seating-status__bar-fill" style="width: 84%;"></div>
                 </div>
                 <div class="seating-status__legend">
-                    <span class="legend-item"><span class="legend-dot legend-dot--sold"></span> Sold (42)</span>
-                    <span class="legend-item"><span class="legend-dot legend-dot--free"></span> Available (8)</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--sold"></span> Vendidas (42)</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--free"></span> Libres (8)</span>
                 </div>
             </section>
         </footer>

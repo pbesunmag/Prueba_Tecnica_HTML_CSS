@@ -1,8 +1,0 @@
-{
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/", "destination": "/index/index.html" },
-    { "source": "/es", "destination": "/index/index-es.html" },
-    { "source": "/en", "destination": "/index/index-en.html" }
-  ]
-}
