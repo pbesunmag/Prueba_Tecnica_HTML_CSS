@@ -1,6 +1,6 @@
-# 🎭 Preparación Escena – La magia de Godot (Todo List Estática)
+# 🎭 Preparación Escena – La magia de Godot (To do List Estática)
 
-Aplicación web estática tipo **Todo List** desarrollada como prueba técnica de maquetación con **HTML5 semántico** y **CSS3 puro**. El proyecto está ambientado en la preparación técnica entre bambalinas de la producción teatral y de magia *La màgia d'en Godot*.
+Aplicación web estática tipo **To do List** desarrollada como prueba técnica de maquetación con **HTML5 semántico** y **CSS3 puro**. El proyecto está ambientado en la preparación técnica entre bambalinas de la producción teatral y de magia *La màgia d'en Godot*.
 
 ---
 
@@ -8,7 +8,7 @@ Aplicación web estática tipo **Todo List** desarrollada como prueba técnica d
 
 > *"La magia sobre el escenario parece espontánea, pero cada milagro visual es el resultado de un rigor meticuloso detrás del telón."*
 
-Esta Todo List no es un simple listado de tareas genéricas; es el reflejo fiel del *checklist* real que utilizamos entre bastidores antes de abrir puertas en cada función de **La màgia d'en Godot**. Desde la revisión del pañuelo volador y las cargas de vestuario hasta la comprobación técnica de la gran ilusión (*Assistant's Revenge*) y la sincronización de las pistas de sonido, cada detalle cuenta para que la ilusión funcione sin fisuras.
+Esta To do List no es un simple listado de tareas genéricas; es el reflejo fiel del *checklist* real que utilizamos entre bastidores antes de abrir puertas en cada función de **La màgia d'en Godot**. Desde la revisión del pañuelo volador y las cargas de vestuario hasta la comprobación técnica de la gran ilusión (*Assistant's Revenge*) y la sincronización de las pistas de sonido, cada detalle cuenta para que la ilusión funcione sin fisuras.
 
 El diseño visual traslada la atmósfera del teatro a la pantalla: tonos oscuros y sobrios inspirados en el backstage, destellos dorados que evocan la esencia del ilusionismo, el cartel oficial de la obra integrado en el fondo y una estructura ordenada pensada para mantener la calma y el control bajo la presión del directo antes de desear *"mucha mierda"*.
 
