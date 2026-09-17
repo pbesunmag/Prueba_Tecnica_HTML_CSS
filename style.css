@@ -2,7 +2,6 @@
    VARIABLES (Theming: Magia / Teatro)
    ========================================= */
 :root {
-    /* Paleta de colores: Tonos oscuros de teatro, dorados mágicos */
     --bg-body: #0c0812;
     --bg-card: #161021;
     --bg-card-hover: #1f172e;
@@ -40,7 +39,7 @@
 }
 
 /* =========================================
-   RESET BÁSICO
+   RESET BÁSICO & ACCESIBILIDAD
    ========================================= */
 * {
     box-sizing: border-box;
@@ -211,7 +210,7 @@ body {
 .main-content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md); /* Separa limpiamente el formulario, la lista y las acciones */
+    gap: var(--space-md);
 }
 
 /* =========================================
@@ -311,6 +310,11 @@ body {
     border-color: var(--color-danger);
 }
 
+.btn--sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
 /* =========================================
    LISTA DE TAREAS
    ========================================= */
@@ -377,12 +381,30 @@ body {
     flex: 1;
     font-size: 1rem;
     transition: color 0.3s ease, text-decoration 0.3s ease;
+    word-break: break-word;
 }
 
 .task-item__checkbox:checked + .task-item__label {
     color: var(--text-muted);
     text-decoration: line-through;
     text-decoration-color: var(--color-accent);
+}
+
+.task-item__delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0 var(--space-xs);
+    margin-left: var(--space-sm);
+    transition: color 0.3s ease, transform 0.2s ease;
+    line-height: 1;
+}
+
+.task-item__delete-btn:hover {
+    color: var(--color-danger);
+    transform: scale(1.15);
 }
 
 /* =========================================
@@ -452,7 +474,6 @@ body {
     width: auto;
 }
 
-/* Select con flecha personalizada desplazada hacia la izquierda */
 .show-selector-select {
     background-color: var(--bg-card);
     color: var(--text-main);
@@ -478,12 +499,41 @@ body {
     border-color: var(--color-accent);
 }
 
-.btn--sm {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: var(--shadow-glow);
+    animation: pulse 2s infinite;
 }
 
-/* Seating Status (Aforament) */
+.status-indicator--prep {
+    background-color: var(--color-accent);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.status-indicator--cancelled {
+    background-color: var(--color-danger);
+    box-shadow: 0 0 10px rgba(230, 57, 70, 0.6);
+}
+
+.status-indicator--ready {
+    background-color: #2a9d8f;
+    box-shadow: 0 0 10px rgba(42, 157, 143, 0.6);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+
+/* =========================================
+   AFORO SALA (SEATING STATUS)
+   ========================================= */
 .seating-status {
     width: 100%;
     background-color: var(--bg-card);
@@ -491,13 +541,16 @@ body {
     padding: var(--space-md);
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
 }
 
 .seating-status__header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: var(--space-sm);
+    margin: 0;
 }
 
 .seating-status__title {
@@ -511,12 +564,43 @@ body {
     color: var(--text-muted);
 }
 
+.seating-status__action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0.2rem 0;
+}
+
+#btn-open-seating {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--color-border);
+    padding: 0.45rem 1.1rem;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+}
+
+#btn-open-seating:hover,
+#btn-open-seating:focus,
+#btn-open-seating:active {
+    background-color: #ffffff;
+    color: #0c0812;
+    border-color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+    transform: translateY(-1px);
+    outline: none;
+}
+
 .seating-status__bar-wrapper {
     height: 12px;
     background-color: var(--bg-body);
     border-radius: 6px;
     overflow: hidden;
-    margin-bottom: var(--space-sm);
+    margin: 0;
+    width: 100%;
 }
 
 .seating-status__bar-fill {
@@ -558,21 +642,168 @@ body {
     border: 1px solid var(--color-border);
 }
 
-.status-indicator {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background-color: var(--color-accent);
-    border-radius: 50%;
-    margin-right: 6px;
-    box-shadow: var(--shadow-glow);
-    animation: pulse 2s infinite;
+/* =========================================
+   PATIO DE BUTACAS (Modal & Grid)
+   ========================================= */
+.seating-modal {
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: transparent;
+    max-width: 600px;
+    width: 90%;
+    color: var(--text-main);
 }
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+.seating-modal::backdrop {
+    background: rgba(12, 8, 18, 0.85);
+    backdrop-filter: blur(6px);
+}
+
+.seating-modal__card {
+    background: var(--bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.seating-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-xs);
+}
+
+.seating-modal__title {
+    font-family: var(--font-heading);
+    color: var(--color-accent);
+    font-size: 1.25rem;
+}
+
+.seating-modal__close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.seating-modal__close:hover {
+    color: var(--color-danger);
+}
+
+.stage-container {
+    perspective: 400px;
+    margin: var(--space-xs) auto;
+    width: 80%;
+}
+
+.stage-screen {
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.25) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border-top: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    padding: 6px;
+    transform: rotateX(-15deg);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+    border-radius: 4px 4px 0 0;
+}
+
+.seating-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    justify-content: center;
+    padding: var(--space-xs) 0;
+}
+
+.seat {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+}
+
+.seat:hover:not(.seat--blocked) {
+    transform: scale(1.15);
+    z-index: 2;
+}
+
+.seat--free {
+    background-color: #1c611c;
+    color: #ffffff;
+    border-color: #3b3054;
+}
+
+.seat--sold {
+    background-color: var(--color-accent);
+    color: var(--bg-body);
+    border-color: var(--color-accent-hover);
+    box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+}
+
+.seat--accessible {
+    background-color: #1d3557;
+    color: #48cae4;
+    border-color: #48cae4;
+}
+
+.seat--accessible.seat--sold {
+    background-color: #2a9d8f;
+    color: #ffffff;
+    border-color: #52b788;
+}
+
+.seat--blocked {
+    background-color: #ef0909;
+    color: #ffffff;
+    border-color: rgba(8, 8, 8, 0.4);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.seating-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: var(--space-xs) 0;
+}
+
+.seat-sample {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.seating-modal__hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    font-style: italic;
 }
 
 /* =========================================

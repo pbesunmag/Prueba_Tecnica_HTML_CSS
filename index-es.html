@@ -1,174 +1,222 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Preparación Escena – La magia de Godot</title>
-    <meta name="description" content="Checklist de preparación para el show de magia La magia de Godot">
-    
+    <meta
+      name="description"
+      content="Checklist de preparación para el show de magia La magia de Godot"
+    />
+
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
     <div class="app-wrapper">
-        <header class="header">
-            <nav class="lang-selector" aria-label="Selector de idioma">
-                <a href="index.html" class="lang-link">CA</a>
-                <a href="#" class="lang-link lang-link--active" aria-current="page">ES</a>
-                <a href="index-en.html" class="lang-link">EN</a>
-            </nav>
-            <h1 class="header__title">Preparación Escena</h1>
-            <p class="header__subtitle">La magia de Godot</p>
-            <div class="header__curtain-deco"></div>
-        </header>
+      <header class="header">
+        <nav class="lang-selector" aria-label="Selector de idioma">
+          <a href="index.html" class="lang-link">CA</a>
+          <a href="#" class="lang-link lang-link--active" aria-current="page"
+            >ES</a
+          >
+          <a href="index-en.html" class="lang-link">EN</a>
+        </nav>
+        <h1 class="header__title">Preparación Escena</h1>
+        <p class="header__subtitle">La magia de Godot</p>
+        <div class="header__curtain-deco"></div>
+      </header>
 
-        <aside class="show-countdown" aria-label="Tiempo restante para la función">
-            <span class="show-countdown__label">Próxima función en:</span>
-            <div class="show-countdown__timer">
-                <span class="timer-unit"><strong>01</strong>h</span>
-                <span class="timer-divider">:</span>
-                <span class="timer-unit"><strong>45</strong>m</span>
-                <span class="timer-divider">:</span>
-                <span class="timer-unit"><strong>00</strong>s</span>
+      <!-- En index-es.html (Castellano) -->
+      <aside
+        class="show-countdown"
+        aria-label="Tiempo restante para la función"
+      >
+        <span class="show-countdown__label">Próxima función en:</span>
+        <div class="show-countdown__timer" aria-live="polite">
+          <span class="timer-unit"><strong>--</strong>d</span>
+          <span class="timer-divider">:</span>
+          <span class="timer-unit"><strong>--</strong>h</span>
+          <span class="timer-divider">:</span>
+          <span class="timer-unit"><strong>--</strong>m</span>
+          <span class="timer-divider">:</span>
+          <span class="timer-unit"><strong>--</strong>s</span>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section class="task-entry" aria-labelledby="add-task-heading">
+          <h2 id="add-task-heading" class="sr-only">Añadir nueva tarea</h2>
+          <form id="task-form" class="task-form" action="#" method="get">
+            <label for="new-task" class="sr-only"
+              >¿Qué más hay que preparar?</label
+            >
+            <input
+              type="text"
+              id="new-task"
+              name="new-task"
+              class="task-form__input"
+              placeholder="Ej: Comprobar luces..."
+              required
+            />
+            <button type="submit" class="btn btn--primary">Añadir</button>
+          </form>
+        </section>
+
+        <section class="task-list-section" aria-labelledby="task-list-heading">
+          <h2 id="task-list-heading" class="sr-only">Lista de tareas</h2>
+          <ul id="task-list" class="task-list"></ul>
+        </section>
+
+        <section class="task-actions" aria-labelledby="actions-heading">
+          <h2 id="actions-heading" class="sr-only">
+            Acciones de mantenimiento
+          </h2>
+          <button
+            type="button"
+            id="btn-clear-completed"
+            class="btn btn--secondary"
+          >
+            Eliminar tareas completadas
+          </button>
+          <button type="button" id="btn-clear-all" class="btn btn--danger">
+            Eliminar todas las tareas
+          </button>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer__top-bar">
+          <div class="footer__show-status">
+            <p>
+              Estado del espectáculo: <span class="status-indicator"></span>
+              <strong>En preparación</strong>
+            </p>
+          </div>
+          <form class="show-selector-inline" action="#" method="get">
+            <label for="show-select" class="sr-only">Actualizar estado</label>
+            <div class="show-selector-inline__controls">
+              <select
+                id="show-select"
+                name="selected_show"
+                class="show-selector-select"
+              >
+                <option value="prep" selected>En Preparación</option>
+                <option value="cancelled">Cancelado</option>
+                <option value="ready">¡Preparados!</option>
+              </select>
+              <button type="submit" class="btn btn--secondary btn--sm">
+                Cambiar
+              </button>
             </div>
-        </aside>
+          </form>
+        </div>
+        <section class="seating-status" aria-labelledby="seating-heading">
+          <div class="seating-status__header">
+            <h2 id="seating-heading" class="seating-status__title">
+              Aforo Sala
+            </h2>
+            <span class="seating-status__count"
+              ><strong>42</strong> / 50 butacas (84%)</span
+            >
+          </div>
+          <!-- Dentro de <section class="seating-status">, justo después de la cabecera o antes de la leyenda -->
+          <div class="seating-status__action">
+            <button
+              type="button"
+              id="btn-open-seating"
+              class="btn btn--secondary btn--sm"
+            >
+              🎭 Consultar patio de butacas
+            </button>
+          </div>
 
-        <main class="main-content">
-            
-            <section class="task-entry" aria-labelledby="add-task-heading">
-                <h2 id="add-task-heading" class="sr-only">Añadir nueva tarea</h2>
-                <form class="task-form" action="#" method="get">
-                    <label for="new-task" class="sr-only">¿Qué más hay que preparar?</label>
-                    <input type="text" id="new-task" name="new-task" class="task-form__input" placeholder="Ej: Comprobar luces..." required>
-                    <button type="submit" class="btn btn--primary">Añadir</button>
-                </form>
-            </section>
+          <dialog id="seating-modal" class="seating-modal">
+            <div class="seating-modal__card">
+              <header class="seating-modal__header">
+                <h2 class="seating-modal__title">
+                  Patio de Butacas – Sala Principal
+                </h2>
+                <button
+                  type="button"
+                  id="btn-close-seating"
+                  class="seating-modal__close"
+                  aria-label="Tancar modal"
+                >
+                  &times;
+                </button>
+              </header>
 
-            <section class="task-list-section" aria-labelledby="task-list-heading">
-                <h2 id="task-list-heading" class="sr-only">Lista de tareas</h2>
-                <ul class="task-list">
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-1" class="task-item__checkbox" checked>
-                        <label for="task-1" class="task-item__label">Mesita mago, papelera y biombo</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-2" class="task-item__checkbox" checked>
-                        <label for="task-2" class="task-item__label">Pañuelo volador: Poner pila, encender botón, comprobar mando (bolsillo Pol) y colocar en escena</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-3" class="task-item__checkbox">
-                        <label for="task-3" class="task-item__label">Chaqueta: Meter vaso y pañuelo largo</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-4" class="task-item__checkbox">
-                        <label for="task-4" class="task-item__label">Carpeta Pol</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-5" class="task-item__checkbox">
-                        <label for="task-5" class="task-item__label">Pañuelo cazuela</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-6" class="task-item__checkbox">
-                        <label for="task-6" class="task-item__label">Rosa</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-7" class="task-item__checkbox">
-                        <label for="task-7" class="task-item__label">Papeles Aina</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-8" class="task-item__checkbox">
-                        <label for="task-8" class="task-item__label">Streamer boca</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-9" class="task-item__checkbox">
-                        <label for="task-9" class="task-item__label">Bolsa Botella: Pegar moneda con celo</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-10" class="task-item__checkbox">
-                        <label for="task-10" class="task-item__label">Varitas al maletín</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-11" class="task-item__checkbox">
-                        <label for="task-11" class="task-item__label">Cubo Rubik: Desplegar, aguantarlo con una pinza y meter trozo de chocolate</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-12" class="task-item__checkbox">
-                        <label for="task-12" class="task-item__label">Móvil Aina y Pol</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-13" class="task-item__checkbox">
-                        <label for="task-13" class="task-item__label">Comprobar audios</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-14" class="task-item__checkbox">
-                        <label for="task-14" class="task-item__label">Comprobar Assistant's</label>
-                    </li>
-                    
-                    <li class="task-item">
-                        <input type="checkbox" id="task-15" class="task-item__checkbox">
-                        <label for="task-15" class="task-item__label">Desear mucha mierda y rezar que los trucos salgan bien 🎭</label>
-                    </li>
-                </ul>
-            </section>
+              <!-- Escenario visual -->
+              <div class="stage-container">
+                <div class="stage-screen">ESCENARIO</div>
+              </div>
 
-            <section class="task-actions" aria-labelledby="actions-heading">
-                <h2 id="actions-heading" class="sr-only">Acciones de mantenimiento</h2>
-                <button type="button" class="btn btn--secondary">Eliminar tareas completadas</button>
-                <button type="button" class="btn btn--danger">Eliminar todas las tareas</button>
-            </section>
-            
-        </main>
+              <!-- Leyenda interactiva -->
+              <div class="seating-legend">
+                <span class="legend-item"
+                  ><span class="seat-sample seat--free"></span> Disponible</span
+                >
+                <span class="legend-item"
+                  ><span class="seat-sample seat--sold"></span> Ocupada</span
+                >
+                <span class="legend-item"
+                  ><span class="seat-sample seat--accessible"></span> PMR /
+                  Accesible</span
+                >
+                <span class="legend-item"
+                  ><span class="seat-sample seat--blocked"></span> Tècnica /
+                  Bloqueada</span
+                >
+              </div>
 
-        <footer class="footer">
-            <div class="footer__top-bar">
-                <div class="footer__show-status">
-                    <p>Estado del espectáculo: <span class="status-indicator"></span> <strong>En preparación</strong></p>
-                </div>
-                <form class="show-selector-inline" action="#" method="get">
-                    <label for="show-select" class="sr-only">Actualizar estado</label>
-                    <div class="show-selector-inline__controls">
-                        <select id="show-select" name="selected_show" class="show-selector-select">
-                            <option value="prep" selected>En Preparación</option>
-                            <option value="cancelled">Cancelado</option>
-                            <option value="ready">¡Preparados!</option>
-                        </select>
-                        <button type="submit" class="btn btn--secondary btn--sm">Cambiar</button>
-                    </div>
-                </form>
+              <!-- Rejilla interactiva de butacas generada por JS -->
+              <div
+                id="seating-grid"
+                class="seating-grid"
+                role="grid"
+                aria-label="Distribució de butaques"
+              ></div>
+
+              <footer class="seating-modal__footer">
+                <p class="seating-modal__hint">
+                  Haz clic en una butaca disponible para simular su reserva o
+                  liberación.
+                </p>
+              </footer>
             </div>
-            <section class="seating-status" aria-labelledby="seating-heading">
-                <div class="seating-status__header">
-                    <h2 id="seating-heading" class="seating-status__title">Aforo Sala</h2>
-                    <span class="seating-status__count"><strong>42</strong> / 50 butacas (84%)</span>
-                </div>
-                <div class="seating-status__bar-wrapper" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="50" aria-label="Porcentaje de entradas vendidas">
-                    <div class="seating-status__bar-fill" style="width: 84%;"></div>
-                </div>
-                <div class="seating-status__legend">
-                    <span class="legend-item"><span class="legend-dot legend-dot--sold"></span> Vendidas (42)</span>
-                    <span class="legend-item"><span class="legend-dot legend-dot--free"></span> Libres (8)</span>
-                </div>
-            </section>
-        </footer>
+          </dialog>
+          <div
+            class="seating-status__bar-wrapper"
+            role="progressbar"
+            aria-valuenow="42"
+            aria-valuemin="0"
+            aria-valuemax="50"
+            aria-label="Porcentaje de entradas vendidas"
+          >
+            <div class="seating-status__bar-fill" style="width: 84%"></div>
+          </div>
+          <div class="seating-status__legend">
+            <span class="legend-item"
+              ><span class="legend-dot legend-dot--sold"></span> Vendidas
+              (42)</span
+            >
+            <span class="legend-item"
+              ><span class="legend-dot legend-dot--free"></span> Libres
+              (8)</span
+            >
+          </div>
+        </section>
+      </footer>
     </div>
-</body>
+  </body>
 </html>
