@@ -1,7 +1,7 @@
 /**
  * Todo List - La màgia d'en Godot
  * Vanilla JS - Single Source of Truth Architecture
- * Gestión de Tareas, Estado del Espectáculo, Patio de Butacas y Ubicación
+ * Gestión de Tareas, Estado del Espectáculo, Patio de Butacas, Ubicación y Progreso
  */
 
 // --- 1. DATOS POR DEFECTO (TAREAS INICIALES SINCRONIZADAS) ---
@@ -121,6 +121,7 @@ const countdownDictionary = {
 let tasks = [];
 let showStatus = 'prep'; // 'prep' | 'cancelled' | 'ready'
 let seats = [];
+let currentFilter = 'all'; // 'all' | 'pending' | 'completed'
 
 // Idioma actual detectado mediante la etiqueta <html lang="...">
 const currentLang = document.documentElement.lang || 'ca';
@@ -131,6 +132,11 @@ const taskForm = document.getElementById('task-form');
 const newTaskInput = document.getElementById('new-task');
 const btnClearCompleted = document.getElementById('btn-clear-completed');
 const btnClearAll = document.getElementById('btn-clear-all');
+
+// Progreso de tareas y filtros
+const progressCountEl = document.getElementById('task-progress-count');
+const progressFillEl = document.getElementById('task-progress-fill');
+const filterBtns = document.querySelectorAll('.btn-filter');
 
 const showStatusContainer = document.querySelector('.footer__show-status');
 const showSelectorForm = document.querySelector('.show-selector-inline');
@@ -297,13 +303,35 @@ async function ensureTranslations() {
 function renderTasks() {
     taskListEl.innerHTML = '';
     
+    // A) Cálculo del progreso global
+    const total = tasks.length;
+    const completedCount = tasks.filter(t => t.completed).length;
+    const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+
+    if (progressCountEl) {
+        let taskLabel = 'tasques';
+        if (currentLang === 'es') taskLabel = 'tareas';
+        if (currentLang === 'en') taskLabel = 'tasks';
+        progressCountEl.innerHTML = `<strong>${completedCount}</strong> / ${total} ${taskLabel} (${percent}%)`;
+    }
+    if (progressFillEl) {
+        progressFillEl.style.width = `${percent}%`;
+    }
+
+    // B) Filtrado de tareas según pestaña activa
+    const filteredTasks = tasks.filter(task => {
+        if (currentFilter === 'pending') return !task.completed;
+        if (currentFilter === 'completed') return task.completed;
+        return true;
+    });
+
     let delLabel = 'Eliminar tasca';
     if (currentLang === 'es') delLabel = 'Eliminar tarea';
     if (currentLang === 'en') delLabel = 'Delete task';
     
     const fragment = document.createDocumentFragment();
     
-    tasks.forEach(task => {
+    filteredTasks.forEach(task => {
         const displayText = task.translations[currentLang] 
             || task.translations[task.sourceLang] 
             || Object.values(task.translations)[0] 
@@ -446,18 +474,34 @@ function setupEventListeners() {
         }
     });
     
-    // C) Eliminar completadas
+    // C) Eliminar tareas completadas
     btnClearCompleted.addEventListener('click', () => {
         tasks = tasks.filter(t => !t.completed);
         saveTasks();
         renderTasks();
     });
     
-    // D) Eliminar todas
+    // D) Eliminar todas las tareas con confirmación de seguridad
     btnClearAll.addEventListener('click', () => {
-        tasks = [];
-        saveTasks();
-        renderTasks();
+        let confirmText = 'Segur que vols eliminar totes les tasques de preparació?';
+        if (currentLang === 'es') confirmText = '¿Seguro que quieres eliminar todas las tareas de preparación?';
+        if (currentLang === 'en') confirmText = 'Are you sure you want to delete all preparation tasks?';
+
+        if (window.confirm(confirmText)) {
+            tasks = [];
+            saveTasks();
+            renderTasks();
+        }
+    });
+
+    // Control de filtros (Todas / Pendientes / Completadas)
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('btn-filter--active'));
+            btn.classList.add('btn-filter--active');
+            currentFilter = btn.dataset.filter;
+            renderTasks();
+        });
     });
 
     // E) Cambiar estado del espectáculo

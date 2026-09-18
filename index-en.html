@@ -27,9 +27,7 @@
         <nav class="lang-selector" aria-label="Language selector">
           <a href="index.html" class="lang-link">CA</a>
           <a href="index-es.html" class="lang-link">ES</a>
-          <a href="#" class="lang-link lang-link--active" aria-current="page"
-            >EN</a
-          >
+          <a href="#" class="lang-link lang-link--active" aria-current="page">EN</a>
         </nav>
         <h1 class="header__title">Stage Preparation</h1>
         <p class="header__subtitle">Godot's Magic</p>
@@ -62,9 +60,7 @@
         <section class="task-entry" aria-labelledby="add-task-heading">
           <h2 id="add-task-heading" class="sr-only">Add new task</h2>
           <form id="task-form" class="task-form" action="#" method="get">
-            <label for="new-task" class="sr-only"
-              >What else needs to be prepared?</label
-            >
+            <label for="new-task" class="sr-only">What else needs to be prepared?</label>
             <input
               type="text"
               id="new-task"
@@ -78,7 +74,24 @@
         </section>
 
         <section class="task-list-section" aria-labelledby="task-list-heading">
-          <h2 id="task-list-heading" class="sr-only">Task list</h2>
+          <!-- Progreso de preparación -->
+          <div class="task-progress-card">
+            <div class="task-progress-card__header">
+              <h2 id="task-list-heading" class="task-progress-card__title">Stage Progress</h2>
+              <span id="task-progress-count" class="task-progress-card__count">0 / 0 tasks (0%)</span>
+            </div>
+            <div class="task-progress-card__bar" role="progressbar" aria-label="Preparation tasks progress">
+              <div id="task-progress-fill" class="task-progress-card__fill" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Filtros de tareas -->
+          <div class="task-filters" role="group" aria-label="Task filters">
+            <button type="button" class="btn-filter btn-filter--active" data-filter="all">All</button>
+            <button type="button" class="btn-filter" data-filter="pending">Pending</button>
+            <button type="button" class="btn-filter" data-filter="completed">Completed</button>
+          </div>
+
           <ul id="task-list" class="task-list"></ul>
         </section>
 
@@ -252,7 +265,7 @@
             <h3 class="details-block__title">🎭 Venue</h3>
             <p class="details-location">
               <strong>Els Carlins</strong><br />
-              Manresa, Barcelona
+              Carrer de la Sabateria, 3, 5, 08241 Manresa, Barcelona
             </p>
           </div>
 

@@ -350,6 +350,85 @@ body {
 }
 
 /* =========================================
+   PROGRESO DE TAREAS & FILTROS
+   ========================================= */
+.task-progress-card {
+    background: var(--bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.task-progress-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-progress-card__title {
+    font-size: 0.95rem;
+    color: var(--color-accent);
+    font-family: var(--font-heading);
+    margin: 0;
+}
+
+.task-progress-card__count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.task-progress-card__bar {
+    height: 8px;
+    background-color: var(--bg-body);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.task-progress-card__fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    box-shadow: var(--shadow-glow);
+}
+
+.task-filters {
+    display: flex;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xs);
+}
+
+.btn-filter {
+    background-color: var(--bg-card);
+    border: 1px solid var(--color-border);
+    color: var(--text-muted);
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+}
+
+.btn-filter:hover {
+    color: var(--text-main);
+    border-color: var(--text-muted);
+}
+
+.btn-filter--active {
+    background-color: var(--color-accent);
+    color: var(--bg-body);
+    border-color: var(--color-accent);
+    font-weight: 600;
+}
+
+/* =========================================
    LISTA DE TAREAS
    ========================================= */
 .task-list {

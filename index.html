@@ -25,9 +25,7 @@
     <div class="app-wrapper">
       <header class="header">
         <nav class="lang-selector" aria-label="Selector d'idioma">
-          <a href="#" class="lang-link lang-link--active" aria-current="page"
-            >CA</a
-          >
+          <a href="#" class="lang-link lang-link--active" aria-current="page">CA</a>
           <a href="index-es.html" class="lang-link">ES</a>
           <a href="index-en.html" class="lang-link">EN</a>
         </nav>
@@ -36,7 +34,7 @@
         <div class="header__curtain-deco"></div>
       </header>
 
-      <!-- Contador interactivo con disparador a detalles del show -->
+      <!-- Comptador interactiu amb disparador a detalls del xou -->
       <aside class="show-countdown" aria-label="Temps restant per a la funció">
         <button
           type="button"
@@ -76,7 +74,24 @@
         </section>
 
         <section class="task-list-section" aria-labelledby="task-list-heading">
-          <h2 id="task-list-heading" class="sr-only">Llista de tasques</h2>
+          <!-- Progrés de preparació -->
+          <div class="task-progress-card">
+            <div class="task-progress-card__header">
+              <h2 id="task-list-heading" class="task-progress-card__title">Progrés d'escena</h2>
+              <span id="task-progress-count" class="task-progress-card__count">0 / 0 tasques (0%)</span>
+            </div>
+            <div class="task-progress-card__bar" role="progressbar" aria-label="Progrés de tasques preparades">
+              <div id="task-progress-fill" class="task-progress-card__fill" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Filtres de tasques -->
+          <div class="task-filters" role="group" aria-label="Filtres de tasques">
+            <button type="button" class="btn-filter btn-filter--active" data-filter="all">Totes</button>
+            <button type="button" class="btn-filter" data-filter="pending">Pendents</button>
+            <button type="button" class="btn-filter" data-filter="completed">Completades</button>
+          </div>
+
           <ul id="task-list" class="task-list"></ul>
         </section>
 
@@ -238,11 +253,11 @@
             <h3 class="details-block__title">🗓️ Calendari de Funcions</h3>
             <ul class="details-dates">
               <li>
-                <strong>27 de Setembre:</strong> A partir de les 18:00h (pases
+                <strong>27 de Setembre:</strong> A partir de les 18:00h (passis
                 cada 15 min)
               </li>
               <li>
-                <strong>18 d'Octubre:</strong> A partir de les 18:00h (pases
+                <strong>18 d'Octubre:</strong> A partir de les 18:00h (passis
                 cada 15 min)
               </li>
             </ul>
@@ -252,13 +267,14 @@
             <h3 class="details-block__title">🎭 Espai Escènic</h3>
             <p class="details-location">
               <strong>Els Carlins</strong><br />
-              Manresa, Barcelona
+              Carrer de la Sabateria, 3, 5, 08241 Manresa, Barcelona
             </p>
           </div>
 
           <div class="details-action">
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=Els+Carlins,+Carrer+de+la+Sabateria,+3,+5,+08241+Manresa,+Barcelona"
+              target="_blank"
               rel="noopener noreferrer"
               class="btn btn--primary btn-maps"
             >
