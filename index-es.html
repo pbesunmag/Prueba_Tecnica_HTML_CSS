@@ -17,7 +17,7 @@
       rel="stylesheet"
     />
 
-    <!-- CSS -->
+    <!-- CSS & JS -->
     <link rel="stylesheet" href="style.css" />
     <script src="js/app.js" defer></script>
   </head>
@@ -36,21 +36,29 @@
         <div class="header__curtain-deco"></div>
       </header>
 
-      <!-- En index-es.html (Castellano) -->
+      <!-- Contador interactivo con disparador a detalles del show -->
       <aside
         class="show-countdown"
         aria-label="Tiempo restante para la función"
       >
-        <span class="show-countdown__label">Próxima función en:</span>
-        <div class="show-countdown__timer" aria-live="polite">
-          <span class="timer-unit"><strong>--</strong>d</span>
-          <span class="timer-divider">:</span>
-          <span class="timer-unit"><strong>--</strong>h</span>
-          <span class="timer-divider">:</span>
-          <span class="timer-unit"><strong>--</strong>m</span>
-          <span class="timer-divider">:</span>
-          <span class="timer-unit"><strong>--</strong>s</span>
-        </div>
+        <button
+          type="button"
+          id="btn-show-details"
+          class="show-countdown__trigger"
+          aria-haspopup="dialog"
+          aria-label="Consultar detalles y ubicación de la próxima función"
+        >
+          <span class="show-countdown__label">Próxima función en: 📍</span>
+          <div class="show-countdown__timer" aria-live="polite">
+            <span class="timer-unit"><strong>--</strong>d</span>
+            <span class="timer-divider">:</span>
+            <span class="timer-unit"><strong>--</strong>h</span>
+            <span class="timer-divider">:</span>
+            <span class="timer-unit"><strong>--</strong>m</span>
+            <span class="timer-divider">:</span>
+            <span class="timer-unit"><strong>--</strong>s</span>
+          </div>
+        </button>
       </aside>
 
       <main class="main-content">
@@ -120,6 +128,7 @@
             </div>
           </form>
         </div>
+
         <section class="seating-status" aria-labelledby="seating-heading">
           <div class="seating-status__header">
             <h2 id="seating-heading" class="seating-status__title">
@@ -129,7 +138,7 @@
               ><strong>42</strong> / 50 butacas (84%)</span
             >
           </div>
-          <!-- Dentro de <section class="seating-status">, justo después de la cabecera o antes de la leyenda -->
+
           <div class="seating-status__action">
             <button
               type="button"
@@ -140,61 +149,6 @@
             </button>
           </div>
 
-          <dialog id="seating-modal" class="seating-modal">
-            <div class="seating-modal__card">
-              <header class="seating-modal__header">
-                <h2 class="seating-modal__title">
-                  Patio de Butacas – Sala Principal
-                </h2>
-                <button
-                  type="button"
-                  id="btn-close-seating"
-                  class="seating-modal__close"
-                  aria-label="Tancar modal"
-                >
-                  &times;
-                </button>
-              </header>
-
-              <!-- Escenario visual -->
-              <div class="stage-container">
-                <div class="stage-screen">ESCENARIO</div>
-              </div>
-
-              <!-- Leyenda interactiva -->
-              <div class="seating-legend">
-                <span class="legend-item"
-                  ><span class="seat-sample seat--free"></span> Disponible</span
-                >
-                <span class="legend-item"
-                  ><span class="seat-sample seat--sold"></span> Ocupada</span
-                >
-                <span class="legend-item"
-                  ><span class="seat-sample seat--accessible"></span> PMR /
-                  Accesible</span
-                >
-                <span class="legend-item"
-                  ><span class="seat-sample seat--blocked"></span> Tècnica /
-                  Bloqueada</span
-                >
-              </div>
-
-              <!-- Rejilla interactiva de butacas generada por JS -->
-              <div
-                id="seating-grid"
-                class="seating-grid"
-                role="grid"
-                aria-label="Distribució de butaques"
-              ></div>
-
-              <footer class="seating-modal__footer">
-                <p class="seating-modal__hint">
-                  Haz clic en una butaca disponible para simular su reserva o
-                  liberación.
-                </p>
-              </footer>
-            </div>
-          </dialog>
           <div
             class="seating-status__bar-wrapper"
             role="progressbar"
@@ -218,5 +172,111 @@
         </section>
       </footer>
     </div>
+
+    <!-- Modal: Patio de Butacas -->
+    <dialog id="seating-modal" class="seating-modal">
+      <div class="seating-modal__card">
+        <header class="seating-modal__header">
+          <h2 class="seating-modal__title">
+            Patio de Butacas – Sala Principal
+          </h2>
+          <button
+            type="button"
+            id="btn-close-seating"
+            class="seating-modal__close"
+            aria-label="Cerrar modal"
+          >
+            &times;
+          </button>
+        </header>
+
+        <div class="stage-container">
+          <div class="stage-screen">ESCENARIO</div>
+        </div>
+
+        <div class="seating-legend">
+          <span class="legend-item"
+            ><span class="seat-sample seat--free"></span> Disponible</span
+          >
+          <span class="legend-item"
+            ><span class="seat-sample seat--sold"></span> Ocupada</span
+          >
+          <span class="legend-item"
+            ><span class="seat-sample seat--accessible"></span> PMR /
+            Accesible</span
+          >
+          <span class="legend-item"
+            ><span class="seat-sample seat--blocked"></span> Técnica /
+            Bloqueada</span
+          >
+        </div>
+
+        <div
+          id="seating-grid"
+          class="seating-grid"
+          role="grid"
+          aria-label="Distribución de butacas"
+        ></div>
+
+        <footer class="seating-modal__footer">
+          <p class="seating-modal__hint">
+            Haz clic en una butaca disponible para simular su reserva o
+            liberación.
+          </p>
+        </footer>
+      </div>
+    </dialog>
+
+    <!-- Modal: Detalles de la Función y Ubicación -->
+    <dialog id="details-modal" class="seating-modal">
+      <div class="seating-modal__card">
+        <header class="seating-modal__header">
+          <h2 class="seating-modal__title">📍 Próximos Espectáculos & Ubicación</h2>
+          <button
+            type="button"
+            id="btn-close-details"
+            class="seating-modal__close"
+            aria-label="Cerrar"
+          >
+            &times;
+          </button>
+        </header>
+
+        <div class="details-content">
+          <div class="details-block">
+            <h3 class="details-block__title">🗓️ Calendario de Funciones</h3>
+            <ul class="details-dates">
+              <li>
+                <strong>27 de Septiembre:</strong> A partir de las 18:00h (pases
+                cada 15 min)
+              </li>
+              <li>
+                <strong>18 de Octubre:</strong> A partir de las 18:00h (pases
+                cada 15 min)
+              </li>
+            </ul>
+          </div>
+
+          <div class="details-block">
+            <h3 class="details-block__title">🎭 Espacio Escénico</h3>
+            <p class="details-location">
+              <strong>Els Carlins</strong><br />
+              Manresa, Barcelona
+            </p>
+          </div>
+
+          <div class="details-action">
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=Els+Carlins,+Carrer+de+la+Sabateria,+3,+5,+08241+Manresa,+Barcelona"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn--primary btn-maps"
+            >
+              🗺️ Navegar con Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>

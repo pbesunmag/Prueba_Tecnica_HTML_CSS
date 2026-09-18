@@ -1,7 +1,7 @@
 /**
  * Todo List - La màgia d'en Godot
  * Vanilla JS - Single Source of Truth Architecture
- * Gestión de Tareas, Estado del Espectáculo y Patio de Butacas Multilingüe
+ * Gestión de Tareas, Estado del Espectáculo, Patio de Butacas y Ubicación
  */
 
 // --- 1. DATOS POR DEFECTO (TAREAS INICIALES SINCRONIZADAS) ---
@@ -111,6 +111,12 @@ const seatingDictionary = {
     }
 };
 
+const countdownDictionary = {
+    ca: { finished: "TEMPORADA FINALITZADA" },
+    es: { finished: "TEMPORADA FINALIZADA" },
+    en: { finished: "SEASON CONCLUDED" }
+};
+
 // --- 3. SINGLE SOURCE OF TRUTH (ESTADO DE LA APLICACIÓN) ---
 let tasks = [];
 let showStatus = 'prep'; // 'prep' | 'cancelled' | 'ready'
@@ -136,6 +142,14 @@ const btnOpenSeating = document.getElementById('btn-open-seating');
 const btnCloseSeating = document.getElementById('btn-close-seating');
 const seatingGrid = document.getElementById('seating-grid');
 
+// Modal información de la función y mapa
+const detailsModal = document.getElementById('details-modal');
+const btnShowDetails = document.getElementById('btn-show-details');
+const btnCloseDetails = document.getElementById('btn-close-details');
+
+// Contador
+const countdownTimerEl = document.querySelector('.show-countdown__timer');
+
 // --- 5. INICIALIZACIÓN ---
 async function init() {
     loadState();
@@ -146,10 +160,9 @@ async function init() {
     renderShowStatus();
     renderSeating();
     updateSeatingSummary();
-
     startCountdown();
     
-    // Comprobar si hay tareas añadidas que necesiten traducción asíncrona
+    // Comprobar tareas añadidas manualmente que necesiten traducción
     await ensureTranslations();
 }
 
@@ -159,17 +172,14 @@ function loadState() {
     if (savedTasks) {
         try {
             const parsed = JSON.parse(savedTasks);
-            tasks = parsed.map((item, index) => {
-                if (item.translations) return item;
-                return {
-                    id: item.id || Date.now() + index,
-                    completed: Boolean(item.completed),
-                    sourceLang: currentLang,
-                    translations: {
-                        [currentLang]: item.text || ''
-                    }
-                };
-            });
+            const isLegacy = parsed.some(item => !item.translations || !item.translations.es || !item.translations.en);
+            
+            if (isLegacy) {
+                tasks = buildDefaultTasks();
+                saveTasks();
+            } else {
+                tasks = parsed;
+            }
         } catch (e) {
             tasks = buildDefaultTasks();
             saveTasks();
@@ -206,7 +216,7 @@ function loadState() {
 function buildDefaultTasks() {
     return defaultTasksCA.map((textCA, index) => ({
         id: Date.now() + index,
-        completed: index < 2, // Primeras dos marcadas por defecto
+        completed: index < 2,
         sourceLang: 'ca',
         translations: {
             ca: textCA,
@@ -217,10 +227,6 @@ function buildDefaultTasks() {
 }
 
 function buildDefaultSeats() {
-    // 50 butacas en total: 5 filas x 10 asientos
-    // - Asientos 49 y 50: PMR (Accesibles)
-    // - Asientos 25 y 26: Inhabilitados por cabina de sonido/técnica
-    // - 42 vendidas de inicio para mantener el 84% inicial
     return Array.from({ length: 50 }, (_, i) => {
         const seatNum = i + 1;
         let type = 'standard';
@@ -288,8 +294,6 @@ async function ensureTranslations() {
 }
 
 // --- 7. FUNCIONES CENTRALIZADAS DE RENDERIZADO ---
-
-// Renderizar tareas
 function renderTasks() {
     taskListEl.innerHTML = '';
     
@@ -335,7 +339,6 @@ function renderTasks() {
     taskListEl.appendChild(fragment);
 }
 
-// Renderizar estado del espectáculo
 function renderShowStatus() {
     if (!showStatusContainer) return;
 
@@ -351,7 +354,6 @@ function renderShowStatus() {
     }
 }
 
-// Renderizar mapa interactivo de butacas
 function renderSeating() {
     if (!seatingGrid) return;
 
@@ -384,7 +386,6 @@ function renderSeating() {
     seatingGrid.appendChild(fragment);
 }
 
-// Sincronizar barra de aforo del footer respetando el idioma
 function updateSeatingSummary() {
     const total = seats.length;
     const sold = seats.filter(s => s.sold && s.type !== 'blocked').length;
@@ -406,7 +407,6 @@ function updateSeatingSummary() {
 
 // --- 8. GESTIÓN DE EVENTOS (EVENT LISTENERS) ---
 function setupEventListeners() {
-    
     // A) Añadir tarea
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -426,7 +426,7 @@ function setupEventListeners() {
         }
     });
     
-    // B) Delegación de eventos para tareas (Checkbox & Eliminar individual)
+    // B) Checkbox & Eliminar tarea individual
     taskListEl.addEventListener('click', (e) => {
         if (e.target.classList.contains('task-item__checkbox')) {
             const taskId = parseInt(e.target.id.replace('task-', ''), 10);
@@ -446,21 +446,21 @@ function setupEventListeners() {
         }
     });
     
-    // C) Eliminar tareas completadas
+    // C) Eliminar completadas
     btnClearCompleted.addEventListener('click', () => {
         tasks = tasks.filter(t => !t.completed);
         saveTasks();
         renderTasks();
     });
     
-    // D) Eliminar todas las tareas
+    // D) Eliminar todas
     btnClearAll.addEventListener('click', () => {
         tasks = [];
         saveTasks();
         renderTasks();
     });
 
-    // E) Cambiar estado del espectáculo (formulario y select)
+    // E) Cambiar estado del espectáculo
     if (showSelectorForm) {
         showSelectorForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -480,7 +480,7 @@ function setupEventListeners() {
         });
     }
 
-    // F) Eventos del Patio de Butacas (Modal y Reserva)
+    // F) Patio de Butacas (Modal y Reserva)
     if (btnOpenSeating && seatingModal) {
         btnOpenSeating.addEventListener('click', () => {
             seatingModal.showModal();
@@ -507,7 +507,6 @@ function setupEventListeners() {
             const seatId = parseInt(btn.dataset.id, 10);
             const seat = seats.find(s => s.id === seatId);
 
-            // Las butacas bloqueadas por motivos técnicos no se pueden alternar
             if (seat && seat.type !== 'blocked') {
                 seat.sold = !seat.sold;
                 saveSeats();
@@ -516,43 +515,54 @@ function setupEventListeners() {
             }
         });
     }
+
+    // G) Modal de Ubicación y Próximas Funciones
+    if (btnShowDetails && detailsModal) {
+        btnShowDetails.addEventListener('click', () => {
+            detailsModal.showModal();
+        });
+    }
+
+    if (btnCloseDetails && detailsModal) {
+        btnCloseDetails.addEventListener('click', () => {
+            detailsModal.close();
+        });
+    }
+
+    if (detailsModal) {
+        detailsModal.addEventListener('click', (e) => {
+            if (e.target === detailsModal) detailsModal.close();
+        });
+    }
 }
 
-// --- 9. CONTADOR DINÁMICO DE PRÓXIMA FUNCIÓN ---
 // --- 9. CONTADOR DINÁMICO DE PRÓXIMA FUNCIÓN (MULTIFECHA) ---
-const countdownTimerEl = document.querySelector('.show-countdown__timer');
-
 function startCountdown() {
     if (!countdownTimerEl) return;
 
-    // Configuración de fechas y pases
-    // Nota: en JavaScript los meses van de 0 a 11 (8 = Septiembre, 9 = Octubre)
     const showDates = [
-        { date: new Date(2026, 8, 27, 18, 0, 0), totalSlots: 4 }, // 27 Septiembre: 18:00 a 19:00 (4 pases de 15 min)
-        { date: new Date(2026, 9, 18, 18, 0, 0), totalSlots: 4 }  // 18 Octubre: 18:00 a 19:00 (4 pases de 15 min)
+        { date: new Date(2026, 8, 27, 18, 0, 0), totalSlots: 4 }, // 27 Septiembre: 18:00 a 19:00
+        { date: new Date(2026, 9, 18, 18, 0, 0), totalSlots: 4 }  // 18 Octubre: 18:00 a 19:00
     ];
-    const slotDurationMs = 15 * 60 * 1000; // 15 minutos en ms
+    const slotDurationMs = 15 * 60 * 1000;
 
     function getNextTargetDate(now) {
         for (const show of showDates) {
             const startTime = show.date.getTime();
             const endTime = startTime + (show.totalSlots * slotDurationMs);
 
-            // Si aún no ha terminado la tanda de pases de este día
             if (now.getTime() < endTime) {
-                // Si aún no ha empezado el primer pase de las 18:00
                 if (now.getTime() < startTime) {
                     return { target: show.date, isLive: false };
                 }
 
-                // Si está dentro de la franja de pases, calcular el siguiente pase de 15 min
                 const elapsed = now.getTime() - startTime;
                 const slotsPassed = Math.floor(elapsed / slotDurationMs);
                 const nextSlotTime = new Date(startTime + (slotsPassed + 1) * slotDurationMs);
                 return { target: nextSlotTime, isLive: false };
             }
         }
-        return null; // Si ya finalizaron todas las fechas programadas
+        return null;
     }
 
     function updateTimer() {
@@ -560,7 +570,8 @@ function startCountdown() {
         const nextShow = getNextTargetDate(now);
 
         if (!nextShow) {
-            countdownTimerEl.innerHTML = `<span><strong>TEMPORADA FINALITZADA</strong></span>`;
+            const finishedMsg = (countdownDictionary[currentLang] || countdownDictionary['ca']).finished;
+            countdownTimerEl.innerHTML = `<span><strong>${finishedMsg}</strong></span>`;
             return;
         }
 

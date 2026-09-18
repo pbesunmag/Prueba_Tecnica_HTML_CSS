@@ -163,7 +163,7 @@ body {
 }
 
 /* =========================================
-   CONTADOR PRÓXIMA FUNCIÓN
+   CONTADOR PRÓXIMA FUNCIÓN & TRIGGER MODAL
    ========================================= */
 .show-countdown {
     display: flex;
@@ -173,11 +173,39 @@ body {
     font-family: var(--font-body);
 }
 
+.show-countdown__trigger {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
+.show-countdown__trigger:hover {
+    transform: scale(1.02);
+}
+
+.show-countdown__trigger:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+}
+
 .show-countdown__label {
     font-size: 0.75rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: color 0.2s ease;
+}
+
+.show-countdown__trigger:hover .show-countdown__label {
+    color: var(--color-accent);
 }
 
 .show-countdown__timer {
@@ -191,6 +219,12 @@ body {
     font-size: 0.9rem;
     color: var(--text-main);
     box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.show-countdown__trigger:hover .show-countdown__timer {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
 }
 
 .timer-unit strong {
@@ -747,6 +781,7 @@ body {
     z-index: 2;
 }
 
+/* Estilos de butacas (Parámetros personalizados) */
 .seat--free {
     background-color: #1c611c;
     color: #ffffff;
@@ -807,6 +842,61 @@ body {
 }
 
 /* =========================================
+   MODAL: DETALLES DE LA FUNCIÓN & UBICACIÓN
+   ========================================= */
+.details-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-xs) 0;
+}
+
+.details-block__title {
+    font-size: 1rem;
+    color: var(--color-accent);
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+}
+
+.details-dates {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.details-dates strong {
+    color: var(--color-accent);
+}
+
+.details-location {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.details-location strong {
+    color: var(--text-main);
+}
+
+.details-action {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-xs);
+}
+
+.btn-maps {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* =========================================
    RESPONSIVE DESIGN (Media Queries)
    ========================================= */
 @media screen and (max-width: 768px) {
@@ -839,6 +929,11 @@ body {
     .show-countdown {
         align-items: center;
         margin-bottom: var(--space-xs);
+    }
+
+    .show-countdown__trigger {
+        align-items: center;
+        text-align: center;
     }
     
     .lang-selector {

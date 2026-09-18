@@ -23,7 +23,7 @@ Esta Todo List reproduce el listado de comprobación técnica que se utiliza ent
   * Borrado masivo de tareas completadas y opción de reset total de la lista.
 * **Persistencia total (`localStorage`)**:
   * Guardado automático en el navegador de tareas, estado del show y localidades.
-  * Recuperación íntegra del estado de la sesión tras recargar la página.
+  * Recuperación íntegra del estado de la sesión tras recargar la página con sanitización de esquemas heredados.
 * **Internacionalización y traducción dinámica**:
   * Interfaz multilingüe nativa (Català, Castellano, English).
   * Las tareas iniciales cargan su traducción técnica verificada en los tres idiomas.
@@ -34,20 +34,23 @@ Esta Todo List reproduce el listado de comprobación técnica que se utiliza ent
   * Modal accesible (`<dialog>`) con el plano de la sala (50 localidades).
   * Tipología de butacas: estándar, PMR (accesibles) y bloqueadas por necesidades técnicas.
   * Conmutación de reservas en tiempo real con recálculo automático de la barra de aforo y estadísticas del footer.
-* **Cuenta atrás de funciones en vivo**:
-  * Contador dinámico sincronizado hacia la fecha y hora de la próxima función (y sus pases sucesivos).
+* **Cuenta atrás multifecha y navegación interactiva**:
+  * Contador dinámico sincronizado hacia la fecha y hora de la próxima función (27 de septiembre y 18 de octubre a las 18:00h) con soporte automático para pases secuenciales cada 15 minutos.
+  * Disparador táctil/accesible integrado en el propio cronómetro para consultar la información del bolo.
+  * Modal de espacio escénico con calendario de pases, ubicación física del teatro (*Els Carlins*) y enlace directo configurado con la API universal de Google Maps (`dir/?api=1&destination=...`) para iniciar navegación GPS paso a paso en terminales móviles y navegadores de escritorio.
 
 ---
 
 ## 🛠️ Arquitectura Técnica y Buenas Prácticas
 
 * **Single Source of Truth (SoT)**: El DOM nunca actúa como almacén de datos. El estado de la aplicación reside exclusivamente en estructuras de datos en JavaScript (`tasks`, `showStatus`, `seats`).
-* **Renderizado centralizado**: Funciones de renderizado dedicadas (`renderTasks()`, `renderShowStatus()`, `renderSeating()`) que transforman el estado en nodos del DOM, evitando mutaciones directas dispersas en los controladores de eventos.
-* **Vanilla JavaScript estricto**: Sin frameworks, sin jQuery y sin librerías externas. Manipulación pura del DOM mediante:
-  * `document.createElement`, `appendChild`, `classList` y `innerHTML`.
+* **Renderizado centralizado**: Funciones de renderizado dedicadas (`renderTasks()`, `renderShowStatus()`, `renderSeating()`, `updateSeatingSummary()`) que transforman el estado en nodos del DOM, evitando mutaciones directas dispersas en los controladores de eventos.
+* **Vanilla JavaScript estricto**: Sin frameworks, sin jQuery y sin dependencias externas. Manipulación limpia mediante:
+  * `document.createElement`, `appendChild`, `classList` e `innerHTML`.
   * `querySelector` y `getElementById`.
   * Delegación de eventos eficiente con `addEventListener`.
-* **Accesibilidad (a11y)**: Roles ARIA, avisos dinámicos en vivo (`aria-live="polite"`), clases de soporte visual (`.sr-only`) y foco en modales nativos.
+  * Gestión nativa de ventanas emergentes con la API HTML5 Dialog (`showModal()`, `close()`).
+* **Accesibilidad (a11y)**: Roles ARIA, regiones reactivas anunciadas en vivo (`aria-live="polite"`), clases de soporte visual (`.sr-only`), foco contenido en modales nativos y enlaces con atributos de seguridad `rel="noopener noreferrer"`.
 
 ---
 
@@ -59,7 +62,7 @@ Esta Todo List reproduce el listado de comprobación técnica que se utiliza ent
 ├── index.html           # Versión en Catalán (por defecto)
 ├── index-es.html        # Versión en Castellano
 ├── index-en.html        # Versión en Inglés
-├── style.css            # Estilos globales, variables CSS y diseño responsive
+├── style.css            # Estilos globales, variables CSS, modales y diseño responsive
 ├── js/
-│   └── app.js           # Lógica de la aplicación, estado global y eventos del DOM
+│   └── app.js           # Lógica central, estado SoT, eventos y cálculo temporal
 └── README.md            # Documentación técnica del proyecto
