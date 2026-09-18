@@ -1,4 +1,4 @@
-# 🎭 Preparación Escena – La magia de Godot (Todo List Dinámica)
+# 🎭 Preparación Escena – La magia de Godot (To do List Dinámica)
 
 Aplicación web interactiva desarrollada con **JavaScript Vanilla**, **HTML5 semántico** y **CSS3**. Evolución de la interfaz estática original hacia una solución dinámica orientada al patrón **Single Source of Truth (SoT)**, reactividad de estado y persistencia de datos.
 
@@ -10,7 +10,7 @@ El proyecto está ambientado en el checklist técnico real entre bambalinas de l
 
 > *"La magia sobre el escenario parece espontánea, pero cada milagro visual es el resultado de un rigor meticuloso detrás del telón."*
 
-Esta Todo List reproduce el listado de comprobación técnica utilizado antes de abrir puertas en *La màgia d'en Godot*: preparación de cargas, revisión de ilusiones de escena (*Assistant's Revenge*), comprobación de pistas de sonido y disposición de atrezo antes de comenzar la función.
+Esta To do List reproduce el listado de comprobación técnica utilizado antes de abrir puertas en *La màgia d'en Godot*: preparación de cargas, revisión de ilusiones de escena (*Assistant's Revenge*), comprobación de pistas de sonido y disposición de atrezo antes de comenzar la función.
 
 ---
 
