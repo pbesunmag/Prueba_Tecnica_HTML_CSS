@@ -34,7 +34,7 @@
         <div class="header__curtain-deco"></div>
       </header>
 
-      <!-- Comptador interactiu amb disparador a detalls del xou -->
+      <!-- Comptador interactiu -->
       <aside class="show-countdown" aria-label="Temps restant per a la funció">
         <button
           type="button"
@@ -74,7 +74,6 @@
         </section>
 
         <section class="task-list-section" aria-labelledby="task-list-heading">
-          <!-- Progrés de preparació -->
           <div class="task-progress-card">
             <div class="task-progress-card__header">
               <h2 id="task-list-heading" class="task-progress-card__title">Progrés d'escena</h2>
@@ -85,7 +84,6 @@
             </div>
           </div>
 
-          <!-- Filtres de tasques -->
           <div class="task-filters" role="group" aria-label="Filtres de tasques">
             <button type="button" class="btn-filter btn-filter--active" data-filter="all">Totes</button>
             <button type="button" class="btn-filter" data-filter="pending">Pendents</button>
@@ -97,16 +95,28 @@
 
         <section class="task-actions" aria-labelledby="actions-heading">
           <h2 id="actions-heading" class="sr-only">Accions de manteniment</h2>
-          <button
-            type="button"
-            id="btn-clear-completed"
-            class="btn btn--secondary"
-          >
-            Eliminar tasques completades
-          </button>
-          <button type="button" id="btn-clear-all" class="btn btn--danger">
-            Eliminar totes les tasques
-          </button>
+          <div class="task-actions__group">
+            <button
+              type="button"
+              id="btn-clear-completed"
+              class="btn btn--secondary"
+            >
+              Eliminar completades
+            </button>
+            <button type="button" id="btn-clear-all" class="btn btn--danger">
+              Eliminar totes
+            </button>
+          </div>
+
+          <div class="task-actions__group task-actions__group--io">
+            <button type="button" id="btn-export-json" class="btn btn--secondary btn--sm" title="Descarregar fitxer JSON amb l'estat actual">
+              📥 Exportar
+            </button>
+            <label for="input-import-json" class="btn btn--secondary btn--sm btn--file-label" title="Pujar fitxer JSON">
+              📤 Importar
+            </label>
+            <input type="file" id="input-import-json" accept=".json" class="sr-only" />
+          </div>
         </section>
       </main>
 
@@ -130,9 +140,6 @@
                 <option value="cancelled">Cancel·lat</option>
                 <option value="ready">Preparats!</option>
               </select>
-              <button type="submit" class="btn btn--secondary btn--sm">
-                Canviar
-              </button>
             </div>
           </form>
         </div>
@@ -226,8 +233,7 @@
 
         <footer class="seating-modal__footer">
           <p class="seating-modal__hint">
-            Fes clic en una butaca lliure per simular la seva reserva o
-            alliberar-la.
+            Fes clic en una butaca lliure per simular la seva reserva o alliberar-la.
           </p>
         </footer>
       </div>
@@ -253,12 +259,10 @@
             <h3 class="details-block__title">🗓️ Calendari de Funcions</h3>
             <ul class="details-dates">
               <li>
-                <strong>27 de Setembre:</strong> A partir de les 18:00h (passis
-                cada 15 min)
+                <strong>27 de Setembre:</strong> A partir de les 18:00h (passis cada 15 min)
               </li>
               <li>
-                <strong>18 d'Octubre:</strong> A partir de les 18:00h (passis
-                cada 15 min)
+                <strong>18 d'Octubre:</strong> A partir de les 18:00h (passis cada 15 min)
               </li>
             </ul>
           </div>

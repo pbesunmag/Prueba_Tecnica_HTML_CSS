@@ -1,7 +1,7 @@
 /**
  * Todo List - La màgia d'en Godot
  * Vanilla JS - Single Source of Truth Architecture
- * Gestión de Tareas, Estado del Espectáculo, Patio de Butacas, Ubicación y Progreso
+ * Tareas, Patio de Butacas, Ubicación, Drag&Drop, Edición Inline y Backup JSON
  */
 
 // --- 1. DATOS POR DEFECTO (TAREAS INICIALES SINCRONIZADAS) ---
@@ -123,6 +123,9 @@ let showStatus = 'prep'; // 'prep' | 'cancelled' | 'ready'
 let seats = [];
 let currentFilter = 'all'; // 'all' | 'pending' | 'completed'
 
+// Variable temporal para Drag and Drop
+let draggedTaskId = null;
+
 // Idioma actual detectado mediante la etiqueta <html lang="...">
 const currentLang = document.documentElement.lang || 'ca';
 
@@ -133,10 +136,14 @@ const newTaskInput = document.getElementById('new-task');
 const btnClearCompleted = document.getElementById('btn-clear-completed');
 const btnClearAll = document.getElementById('btn-clear-all');
 
-// Progreso de tareas y filtros
+// Progreso y filtros
 const progressCountEl = document.getElementById('task-progress-count');
 const progressFillEl = document.getElementById('task-progress-fill');
 const filterBtns = document.querySelectorAll('.btn-filter');
+
+// Exportar e importar
+const btnExportJson = document.getElementById('btn-export-json');
+const inputImportJson = document.getElementById('input-import-json');
 
 const showStatusContainer = document.querySelector('.footer__show-status');
 const showSelectorForm = document.querySelector('.show-selector-inline');
@@ -161,14 +168,12 @@ async function init() {
     loadState();
     setupEventListeners();
     
-    // Renderizados iniciales desde el estado
     renderTasks();
     renderShowStatus();
     renderSeating();
     updateSeatingSummary();
     startCountdown();
     
-    // Comprobar tareas añadidas manualmente que necesiten traducción
     await ensureTranslations();
 }
 
@@ -303,7 +308,7 @@ async function ensureTranslations() {
 function renderTasks() {
     taskListEl.innerHTML = '';
     
-    // A) Cálculo del progreso global
+    // A) Actualización de progreso
     const total = tasks.length;
     const completedCount = tasks.filter(t => t.completed).length;
     const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
@@ -318,7 +323,7 @@ function renderTasks() {
         progressFillEl.style.width = `${percent}%`;
     }
 
-    // B) Filtrado de tareas según pestaña activa
+    // B) Filtrado de tareas
     const filteredTasks = tasks.filter(task => {
         if (currentFilter === 'pending') return !task.completed;
         if (currentFilter === 'completed') return task.completed;
@@ -328,6 +333,10 @@ function renderTasks() {
     let delLabel = 'Eliminar tasca';
     if (currentLang === 'es') delLabel = 'Eliminar tarea';
     if (currentLang === 'en') delLabel = 'Delete task';
+
+    let editHint = 'Doble clic per editar';
+    if (currentLang === 'es') editHint = 'Doble clic para editar';
+    if (currentLang === 'en') editHint = 'Double click to edit';
     
     const fragment = document.createDocumentFragment();
     
@@ -339,6 +348,14 @@ function renderTasks() {
 
         const li = document.createElement('li');
         li.className = 'task-item';
+        li.dataset.id = task.id;
+        li.draggable = true;
+
+        // Tirador de arrastre
+        const handle = document.createElement('span');
+        handle.className = 'task-item__handle';
+        handle.innerHTML = '&#8942;&#8942;';
+        handle.title = 'Arrastra per reordenar';
         
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
@@ -350,6 +367,7 @@ function renderTasks() {
         label.htmlFor = `task-${task.id}`;
         label.className = 'task-item__label';
         label.textContent = displayText;
+        label.title = editHint;
         
         const delBtn = document.createElement('button');
         delBtn.type = 'button';
@@ -358,6 +376,7 @@ function renderTasks() {
         delBtn.setAttribute('aria-label', delLabel);
         delBtn.innerHTML = '&times;';
         
+        li.appendChild(handle);
         li.appendChild(checkbox);
         li.appendChild(label);
         li.appendChild(delBtn);
@@ -473,15 +492,105 @@ function setupEventListeners() {
             renderTasks();
         }
     });
+
+    // C) Edición en línea (Doble clic)
+    taskListEl.addEventListener('dblclick', (e) => {
+        const label = e.target.closest('.task-item__label');
+        if (!label) return;
+
+        const li = label.closest('.task-item');
+        const taskId = parseInt(li.dataset.id, 10);
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        const currentText = label.textContent;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'task-item__edit-input';
+        input.value = currentText;
+
+        li.replaceChild(input, label);
+        input.focus();
+        input.select();
+
+        let isFinished = false;
+        const finishEdit = () => {
+            if (isFinished) return;
+            isFinished = true;
+
+            const newText = input.value.trim();
+            if (newText !== '') {
+                task.translations[currentLang] = newText;
+                task.sourceLang = currentLang;
+                saveTasks();
+            }
+            renderTasks();
+        };
+
+        input.addEventListener('blur', finishEdit);
+        input.addEventListener('keydown', (evt) => {
+            if (evt.key === 'Enter') finishEdit();
+            if (evt.key === 'Escape') {
+                isFinished = true;
+                renderTasks();
+            }
+        });
+    });
+
+    // D) Reordenación mediante Drag and Drop nativo
+    taskListEl.addEventListener('dragstart', (e) => {
+        const li = e.target.closest('.task-item');
+        if (!li) return;
+        draggedTaskId = parseInt(li.dataset.id, 10);
+        li.classList.add('task-item--dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    taskListEl.addEventListener('dragend', (e) => {
+        const li = e.target.closest('.task-item');
+        if (li) li.classList.remove('task-item--dragging');
+        document.querySelectorAll('.task-item--dragover').forEach(el => el.classList.remove('task-item--dragover'));
+    });
+
+    taskListEl.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const overLi = e.target.closest('.task-item');
+        if (!overLi) return;
+        overLi.classList.add('task-item--dragover');
+    });
+
+    taskListEl.addEventListener('dragleave', (e) => {
+        const overLi = e.target.closest('.task-item');
+        if (overLi) overLi.classList.remove('task-item--dragover');
+    });
+
+    taskListEl.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const targetLi = e.target.closest('.task-item');
+        if (!targetLi) return;
+
+        const targetTaskId = parseInt(targetLi.dataset.id, 10);
+        if (draggedTaskId === null || draggedTaskId === targetTaskId) return;
+
+        const fromIndex = tasks.findIndex(t => t.id === draggedTaskId);
+        const toIndex = tasks.findIndex(t => t.id === targetTaskId);
+
+        if (fromIndex !== -1 && toIndex !== -1) {
+            const [movedItem] = tasks.splice(fromIndex, 1);
+            tasks.splice(toIndex, 0, movedItem);
+            saveTasks();
+            renderTasks();
+        }
+    });
     
-    // C) Eliminar tareas completadas
+    // E) Eliminar tareas completadas
     btnClearCompleted.addEventListener('click', () => {
         tasks = tasks.filter(t => !t.completed);
         saveTasks();
         renderTasks();
     });
     
-    // D) Eliminar todas las tareas con confirmación de seguridad
+    // F) Eliminar todas las tareas con confirmación
     btnClearAll.addEventListener('click', () => {
         let confirmText = 'Segur que vols eliminar totes les tasques de preparació?';
         if (currentLang === 'es') confirmText = '¿Seguro que quieres eliminar todas las tareas de preparación?';
@@ -494,7 +603,7 @@ function setupEventListeners() {
         }
     });
 
-    // Control de filtros (Todas / Pendientes / Completadas)
+    // G) Filtros (Todas / Pendientes / Completadas)
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('btn-filter--active'));
@@ -504,7 +613,70 @@ function setupEventListeners() {
         });
     });
 
-    // E) Cambiar estado del espectáculo
+    // H) Exportar estado completo a JSON
+    if (btnExportJson) {
+        btnExportJson.addEventListener('click', () => {
+            const dataToExport = {
+                version: "2.0",
+                exportedAt: new Date().toISOString(),
+                showStatus: showStatus,
+                seats: seats,
+                tasks: tasks
+            };
+            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `godot-checklist-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    }
+
+    // I) Importar estado desde JSON
+    if (inputImportJson) {
+        inputImportJson.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (Array.isArray(data.tasks)) {
+                        tasks = data.tasks;
+                        saveTasks();
+                    }
+                    if (Array.isArray(data.seats)) {
+                        seats = data.seats;
+                        saveSeats();
+                    }
+                    if (data.showStatus && ['prep', 'cancelled', 'ready'].includes(data.showStatus)) {
+                        showStatus = data.showStatus;
+                        saveShowStatus();
+                    }
+                    renderTasks();
+                    renderShowStatus();
+                    renderSeating();
+                    updateSeatingSummary();
+
+                    let successMsg = 'Dades importades correctament!';
+                    if (currentLang === 'es') successMsg = '¡Datos importados correctamente!';
+                    if (currentLang === 'en') successMsg = 'Data imported successfully!';
+                    alert(successMsg);
+                } catch (err) {
+                    let errMsg = 'El fitxer JSON no té un format vàlid.';
+                    if (currentLang === 'es') errMsg = 'El archivo JSON no tiene un formato válido.';
+                    if (currentLang === 'en') errMsg = 'The JSON file format is invalid.';
+                    alert(errMsg);
+                }
+            };
+            reader.readAsText(file);
+            inputImportJson.value = '';
+        });
+    }
+
+    // J) Cambiar estado del espectáculo
     if (showSelectorForm) {
         showSelectorForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -524,7 +696,7 @@ function setupEventListeners() {
         });
     }
 
-    // F) Patio de Butacas (Modal y Reserva)
+    // K) Patio de Butacas
     if (btnOpenSeating && seatingModal) {
         btnOpenSeating.addEventListener('click', () => {
             seatingModal.showModal();
@@ -560,7 +732,7 @@ function setupEventListeners() {
         });
     }
 
-    // G) Modal de Ubicación y Próximas Funciones
+    // L) Modal de Ubicación y Próximas Funciones
     if (btnShowDetails && detailsModal) {
         btnShowDetails.addEventListener('click', () => {
             detailsModal.showModal();

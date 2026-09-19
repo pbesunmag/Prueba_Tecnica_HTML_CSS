@@ -34,7 +34,7 @@
         <div class="header__curtain-deco"></div>
       </header>
 
-      <!-- Contador interactivo con disparador a detalles del show -->
+      <!-- Contador interactivo -->
       <aside class="show-countdown" aria-label="Time remaining until the show">
         <button
           type="button"
@@ -74,7 +74,6 @@
         </section>
 
         <section class="task-list-section" aria-labelledby="task-list-heading">
-          <!-- Progreso de preparación -->
           <div class="task-progress-card">
             <div class="task-progress-card__header">
               <h2 id="task-list-heading" class="task-progress-card__title">Stage Progress</h2>
@@ -85,7 +84,6 @@
             </div>
           </div>
 
-          <!-- Filtros de tareas -->
           <div class="task-filters" role="group" aria-label="Task filters">
             <button type="button" class="btn-filter btn-filter--active" data-filter="all">All</button>
             <button type="button" class="btn-filter" data-filter="pending">Pending</button>
@@ -97,16 +95,28 @@
 
         <section class="task-actions" aria-labelledby="actions-heading">
           <h2 id="actions-heading" class="sr-only">Maintenance actions</h2>
-          <button
-            type="button"
-            id="btn-clear-completed"
-            class="btn btn--secondary"
-          >
-            Delete completed tasks
-          </button>
-          <button type="button" id="btn-clear-all" class="btn btn--danger">
-            Delete all tasks
-          </button>
+          <div class="task-actions__group">
+            <button
+              type="button"
+              id="btn-clear-completed"
+              class="btn btn--secondary"
+            >
+              Delete completed
+            </button>
+            <button type="button" id="btn-clear-all" class="btn btn--danger">
+              Delete all
+            </button>
+          </div>
+
+          <div class="task-actions__group task-actions__group--io">
+            <button type="button" id="btn-export-json" class="btn btn--secondary btn--sm" title="Download JSON state backup">
+              📥 Export
+            </button>
+            <label for="input-import-json" class="btn btn--secondary btn--sm btn--file-label" title="Load JSON backup">
+              📤 Import
+            </label>
+            <input type="file" id="input-import-json" accept=".json" class="sr-only" />
+          </div>
         </section>
       </main>
 
@@ -130,9 +140,6 @@
                 <option value="cancelled">Cancelled</option>
                 <option value="ready">Ready!</option>
               </select>
-              <button type="submit" class="btn btn--secondary btn--sm">
-                Change
-              </button>
             </div>
           </form>
         </div>
@@ -251,12 +258,10 @@
             <h3 class="details-block__title">🗓️ Confirmed Dates</h3>
             <ul class="details-dates">
               <li>
-                <strong>September 27th:</strong> Starting at 18:00h (shows every
-                15 min)
+                <strong>September 27th:</strong> Starting at 18:00h (shows every 15 min)
               </li>
               <li>
-                <strong>October 18th:</strong> Starting at 18:00h (shows every
-                15 min)
+                <strong>October 18th:</strong> Starting at 18:00h (shows every 15 min)
               </li>
             </ul>
           </div>

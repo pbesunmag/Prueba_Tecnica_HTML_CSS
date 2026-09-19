@@ -34,7 +34,7 @@
         <div class="header__curtain-deco"></div>
       </header>
 
-      <!-- Contador interactivo con disparador a detalles del show -->
+      <!-- Contador interactivo -->
       <aside
         class="show-countdown"
         aria-label="Tiempo restante para la función"
@@ -77,7 +77,6 @@
         </section>
 
         <section class="task-list-section" aria-labelledby="task-list-heading">
-          <!-- Progreso de preparación -->
           <div class="task-progress-card">
             <div class="task-progress-card__header">
               <h2 id="task-list-heading" class="task-progress-card__title">Progreso de escena</h2>
@@ -88,7 +87,6 @@
             </div>
           </div>
 
-          <!-- Filtros de tareas -->
           <div class="task-filters" role="group" aria-label="Filtros de tareas">
             <button type="button" class="btn-filter btn-filter--active" data-filter="all">Todas</button>
             <button type="button" class="btn-filter" data-filter="pending">Pendientes</button>
@@ -100,16 +98,28 @@
 
         <section class="task-actions" aria-labelledby="actions-heading">
           <h2 id="actions-heading" class="sr-only">Acciones de mantenimiento</h2>
-          <button
-            type="button"
-            id="btn-clear-completed"
-            class="btn btn--secondary"
-          >
-            Eliminar tareas completadas
-          </button>
-          <button type="button" id="btn-clear-all" class="btn btn--danger">
-            Eliminar todas las tareas
-          </button>
+          <div class="task-actions__group">
+            <button
+              type="button"
+              id="btn-clear-completed"
+              class="btn btn--secondary"
+            >
+              Eliminar completadas
+            </button>
+            <button type="button" id="btn-clear-all" class="btn btn--danger">
+              Eliminar todas
+            </button>
+          </div>
+
+          <div class="task-actions__group task-actions__group--io">
+            <button type="button" id="btn-export-json" class="btn btn--secondary btn--sm" title="Descargar archivo JSON con el estado actual">
+              📥 Exportar
+            </button>
+            <label for="input-import-json" class="btn btn--secondary btn--sm btn--file-label" title="Cargar archivo JSON">
+              📤 Importar
+            </label>
+            <input type="file" id="input-import-json" accept=".json" class="sr-only" />
+          </div>
         </section>
       </main>
 
@@ -133,9 +143,6 @@
                 <option value="cancelled">Cancelado</option>
                 <option value="ready">¡Preparados!</option>
               </select>
-              <button type="submit" class="btn btn--secondary btn--sm">
-                Cambiar
-              </button>
             </div>
           </form>
         </div>
@@ -231,8 +238,7 @@
 
         <footer class="seating-modal__footer">
           <p class="seating-modal__hint">
-            Haz clic en una butaca disponible para simular su reserva o
-            liberación.
+            Haz clic en una butaca disponible para simular su reserva o liberación.
           </p>
         </footer>
       </div>
@@ -258,12 +264,10 @@
             <h3 class="details-block__title">🗓️ Calendario de Funciones</h3>
             <ul class="details-dates">
               <li>
-                <strong>27 de Septiembre:</strong> A partir de las 18:00h (pases
-                cada 15 min)
+                <strong>27 de Septiembre:</strong> A partir de las 18:00h (pases cada 15 min)
               </li>
               <li>
-                <strong>18 de Octubre:</strong> A partir de las 18:00h (pases
-                cada 15 min)
+                <strong>18 de Octubre:</strong> A partir de las 18:00h (pases cada 15 min)
               </li>
             </ul>
           </div>
