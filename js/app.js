@@ -1,3 +1,4 @@
+/* global document, window, localStorage, fetch, console, Blob, URL, FileReader, alert, setInterval */
 /**
  * Todo List - La màgia d'en Godot
  * Vanilla JS - Single Source of Truth Architecture
@@ -119,14 +120,12 @@ const countdownDictionary = {
 
 // --- 3. SINGLE SOURCE OF TRUTH (ESTADO DE LA APLICACIÓN) ---
 let tasks = [];
-let showStatus = 'prep'; // 'prep' | 'cancelled' | 'ready'
+let showStatus = 'prep';
 let seats = [];
-let currentFilter = 'all'; // 'all' | 'pending' | 'completed'
+let currentFilter = 'all';
 
-// Variable temporal para Drag and Drop
 let draggedTaskId = null;
 
-// Idioma actual detectado mediante la etiqueta <html lang="...">
 const currentLang = document.documentElement.lang || 'ca';
 
 // --- 4. SELECTORES DEL DOM ---
@@ -136,31 +135,25 @@ const newTaskInput = document.getElementById('new-task');
 const btnClearCompleted = document.getElementById('btn-clear-completed');
 const btnClearAll = document.getElementById('btn-clear-all');
 
-// Progreso y filtros
 const progressCountEl = document.getElementById('task-progress-count');
 const progressFillEl = document.getElementById('task-progress-fill');
 const filterBtns = document.querySelectorAll('.btn-filter');
 
-// Exportar e importar
 const btnExportJson = document.getElementById('btn-export-json');
 const inputImportJson = document.getElementById('input-import-json');
 
 const showStatusContainer = document.querySelector('.footer__show-status');
-const showSelectorForm = document.querySelector('.show-selector-inline');
 const showSelectorSelect = document.getElementById('show-select');
 
-// Modal patio de butacas
 const seatingModal = document.getElementById('seating-modal');
 const btnOpenSeating = document.getElementById('btn-open-seating');
 const btnCloseSeating = document.getElementById('btn-close-seating');
 const seatingGrid = document.getElementById('seating-grid');
 
-// Modal información de la función y mapa
 const detailsModal = document.getElementById('details-modal');
 const btnShowDetails = document.getElementById('btn-show-details');
 const btnCloseDetails = document.getElementById('btn-close-details');
 
-// Contador
 const countdownTimerEl = document.querySelector('.show-countdown__timer');
 
 // --- 5. INICIALIZACIÓN ---
@@ -178,7 +171,6 @@ async function init() {
 }
 
 function loadState() {
-    // A) Cargar tareas
     const savedTasks = localStorage.getItem('godot_tasks');
     if (savedTasks) {
         try {
@@ -191,7 +183,7 @@ function loadState() {
             } else {
                 tasks = parsed;
             }
-        } catch (e) {
+        } catch {
             tasks = buildDefaultTasks();
             saveTasks();
         }
@@ -200,7 +192,6 @@ function loadState() {
         saveTasks();
     }
 
-    // B) Cargar estado del espectáculo
     const savedStatus = localStorage.getItem('godot_show_status');
     if (savedStatus && ['prep', 'cancelled', 'ready'].includes(savedStatus)) {
         showStatus = savedStatus;
@@ -209,12 +200,11 @@ function loadState() {
         saveShowStatus();
     }
 
-    // C) Cargar estado de butacas
     const savedSeats = localStorage.getItem('godot_seats');
     if (savedSeats) {
         try {
             seats = JSON.parse(savedSeats);
-        } catch (e) {
+        } catch {
             seats = buildDefaultSeats();
             saveSeats();
         }
@@ -308,7 +298,6 @@ async function ensureTranslations() {
 function renderTasks() {
     taskListEl.innerHTML = '';
     
-    // A) Actualización de progreso
     const total = tasks.length;
     const completedCount = tasks.filter(t => t.completed).length;
     const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
@@ -323,7 +312,6 @@ function renderTasks() {
         progressFillEl.style.width = `${percent}%`;
     }
 
-    // B) Filtrado de tareas
     const filteredTasks = tasks.filter(task => {
         if (currentFilter === 'pending') return !task.completed;
         if (currentFilter === 'completed') return task.completed;
@@ -351,7 +339,6 @@ function renderTasks() {
         li.dataset.id = task.id;
         li.draggable = true;
 
-        // Tirador de arrastre
         const handle = document.createElement('span');
         handle.className = 'task-item__handle';
         handle.innerHTML = '&#8942;&#8942;';
@@ -473,7 +460,7 @@ function setupEventListeners() {
         }
     });
     
-    // B) Checkbox & Eliminar tarea individual
+    // B) Checkbox & Eliminar individual
     taskListEl.addEventListener('click', (e) => {
         if (e.target.classList.contains('task-item__checkbox')) {
             const taskId = parseInt(e.target.id.replace('task-', ''), 10);
@@ -537,7 +524,7 @@ function setupEventListeners() {
         });
     });
 
-    // D) Reordenación mediante Drag and Drop nativo
+    // D) Reordenación mediante Drag and Drop
     taskListEl.addEventListener('dragstart', (e) => {
         const li = e.target.closest('.task-item');
         if (!li) return;
@@ -583,14 +570,14 @@ function setupEventListeners() {
         }
     });
     
-    // E) Eliminar tareas completadas
+    // E) Eliminar completadas
     btnClearCompleted.addEventListener('click', () => {
         tasks = tasks.filter(t => !t.completed);
         saveTasks();
         renderTasks();
     });
     
-    // F) Eliminar todas las tareas con confirmación
+    // F) Eliminar todas las tareas
     btnClearAll.addEventListener('click', () => {
         let confirmText = 'Segur que vols eliminar totes les tasques de preparació?';
         if (currentLang === 'es') confirmText = '¿Seguro que quieres eliminar todas las tareas de preparación?';
@@ -603,7 +590,7 @@ function setupEventListeners() {
         }
     });
 
-    // G) Filtros (Todas / Pendientes / Completadas)
+    // G) Filtros
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('btn-filter--active'));
@@ -664,7 +651,7 @@ function setupEventListeners() {
                     if (currentLang === 'es') successMsg = '¡Datos importados correctamente!';
                     if (currentLang === 'en') successMsg = 'Data imported successfully!';
                     alert(successMsg);
-                } catch (err) {
+                } catch {
                     let errMsg = 'El fitxer JSON no té un format vàlid.';
                     if (currentLang === 'es') errMsg = 'El archivo JSON no tiene un formato válido.';
                     if (currentLang === 'en') errMsg = 'The JSON file format is invalid.';
@@ -676,18 +663,7 @@ function setupEventListeners() {
         });
     }
 
-    // J) Cambiar estado del espectáculo
-    if (showSelectorForm) {
-        showSelectorForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (showSelectorSelect) {
-                showStatus = showSelectorSelect.value;
-                saveShowStatus();
-                renderShowStatus();
-            }
-        });
-    }
-
+    // J) Cambiar estado en tiempo real
     if (showSelectorSelect) {
         showSelectorSelect.addEventListener('change', (e) => {
             showStatus = e.target.value;
@@ -732,7 +708,7 @@ function setupEventListeners() {
         });
     }
 
-    // L) Modal de Ubicación y Próximas Funciones
+    // L) Modal de Ubicación
     if (btnShowDetails && detailsModal) {
         btnShowDetails.addEventListener('click', () => {
             detailsModal.showModal();
@@ -757,8 +733,8 @@ function startCountdown() {
     if (!countdownTimerEl) return;
 
     const showDates = [
-        { date: new Date(2026, 8, 27, 18, 0, 0), totalSlots: 4 }, // 27 Septiembre: 18:00 a 19:00
-        { date: new Date(2026, 9, 18, 18, 0, 0), totalSlots: 4 }  // 18 Octubre: 18:00 a 19:00
+        { date: new Date(2026, 8, 27, 18, 0, 0), totalSlots: 4 },
+        { date: new Date(2026, 9, 18, 18, 0, 0), totalSlots: 4 }
     ];
     const slotDurationMs = 15 * 60 * 1000;
 
@@ -825,5 +801,4 @@ function startCountdown() {
     setInterval(updateTimer, 1000);
 }
 
-// Iniciar aplicación al cargar el DOM
 document.addEventListener('DOMContentLoaded', init);
