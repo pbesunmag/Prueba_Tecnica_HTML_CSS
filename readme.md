@@ -43,7 +43,7 @@ Esta Todo List reproduce el listado de comprobación técnica utilizado antes de
   * Tipología de asientos: estándar, PMR (accesibles) y técnicos/bloqueados.
   * Reserva y liberación de butacas en tiempo real con recálculo automático de la barra de aforo del pie de página.
 * **Cuenta atrás multifecha y navegación GPS**:
-  * Temporizador dinámico sincronizado hacia la fecha de la próxima función (27 de septiembre y 18 de octubre a las 18:00h) con gestión secuencial de pases de 15 minutos.
+  * Temporizador dinámico sincronizado hacia la fecha de la próxima función [27 de septiembre(Fecha real de estreno. ¡Deseadme mucha mierda!) y 18 de octubre a las 18:00h] con gestión secuencial de pases de 15 minutos.
   * Disparador táctil y accesible integrado en el propio cronómetro para abrir el modal informativo de la función.
   * Enlace oficial configurado con la API universal de Google Maps (`dir/?api=1&destination=Els+Carlins...`) para iniciar navegación GPS paso a paso hacia el teatro *Els Carlins* de Manresa.
 
